@@ -1,4 +1,4 @@
-package com.fourstars.FourStars.domain.response;
+package com.gopitch.GoPitch.domain.response;
 
 import java.util.List;
 

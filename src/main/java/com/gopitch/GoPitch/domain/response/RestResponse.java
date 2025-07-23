@@ -1,4 +1,4 @@
-package com.fourstars.FourStars.domain.response;
+package com.gopitch.GoPitch.domain.response;
 
 public class RestResponse<T> {
     private int statusCode;

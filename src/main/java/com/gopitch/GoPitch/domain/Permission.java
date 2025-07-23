@@ -1,11 +1,11 @@
-package com.fourstars.FourStars.domain;
+package com.gopitch.GoPitch.domain;
 
 import java.time.Instant;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fourstars.FourStars.util.SecurityUtil;
+import com.gopitch.GoPitch.util.SecurityUtil;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

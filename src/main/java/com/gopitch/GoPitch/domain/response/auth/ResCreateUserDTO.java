@@ -1,4 +1,4 @@
-package com.fourstars.FourStars.domain.response.auth;
+package com.gopitch.GoPitch.domain.response.auth;
 
 import java.time.Instant;
 

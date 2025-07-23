@@ -19,14 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.gopitch.GoPitch.util.SecurityUtil;
 
 import com.gopitch.GoPitch.domain.User;
+import com.gopitch.GoPitch.domain.request.auth.RegisterRequestDTO;
 import com.gopitch.GoPitch.domain.request.auth.ReqLoginDTO;
-import java.util.Optional;
-import com.gopitch.GoPitch.service.UserService;
-import com.gopitch.GoPitch.util.annotation.ApiMessage;
 import com.gopitch.GoPitch.domain.response.auth.ResLoginDTO;
+import com.gopitch.GoPitch.domain.response.user.UserResponseDTO;
+import com.gopitch.GoPitch.service.UserService;
+import com.gopitch.GoPitch.util.SecurityUtil;
+import com.gopitch.GoPitch.util.annotation.ApiMessage;
+import com.gopitch.GoPitch.util.error.BadRequestException;
+import com.gopitch.GoPitch.util.error.DuplicateResourceException;
+import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/api/v1")
