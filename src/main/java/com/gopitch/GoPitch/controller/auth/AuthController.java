@@ -19,10 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.gopitch.GoPitch.util.SecurityUtil;
 
 import com.gopitch.GoPitch.domain.User;
 import com.gopitch.GoPitch.domain.request.auth.ReqLoginDTO;
 import java.util.Optional;
+import com.gopitch.GoPitch.service.UserService;
+import com.gopitch.GoPitch.util.annotation.ApiMessage;
+import com.gopitch.GoPitch.domain.response.auth.ResLoginDTO;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -50,6 +54,7 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     @ApiMessage("Authenticate user and get tokens")
+
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO loginDTO) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginDTO.getUsername(), loginDTO.getPassword());
