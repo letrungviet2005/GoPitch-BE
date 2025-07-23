@@ -24,7 +24,6 @@ import com.gopitch.GoPitch.domain.User;
 import com.gopitch.GoPitch.domain.request.auth.ReqLoginDTO;
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping("/api/v1")
 public class AuthController {
