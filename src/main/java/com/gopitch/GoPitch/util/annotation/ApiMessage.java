@@ -1,4 +1,4 @@
-package com.fourstars.FourStars.util.annotation;
+package com.gopitch.GoPitch.util.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

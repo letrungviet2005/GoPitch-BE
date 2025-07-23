@@ -1,4 +1,4 @@
-package com.fourstars.FourStars.util.error;
+package com.gopitch.GoPitch.util.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

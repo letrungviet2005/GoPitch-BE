@@ -1,4 +1,4 @@
-package com.fourstars.FourStars.util.error;
+package com.gopitch.GoPitch.util.error;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import com.fourstars.FourStars.domain.response.RestResponse;
+import com.gopitch.GoPitch.domain.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalException {

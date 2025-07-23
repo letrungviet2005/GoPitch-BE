@@ -1,19 +1,25 @@
 package com.gopitch.GoPitch.repository;
 
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
+
 import com.gopitch.GoPitch.domain.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    public static final String USER_NOT_FOUND = "User not found";
-    public static final String USER_ALREADY_EXISTS = "User already exists with this email";
-    public static final String USER_DELETED = "User deleted successfully";
-    // Define methods for user-related database operations here
-    // For example:
-    // Optional<User> findByEmail(String email);
-    // List<User> findAll();
-    // User save(User user);
-    // void deleteById(Long id);
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+    Optional<User> findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
+
+    boolean existsByRoleId(Long roleId);
+
+    Page<User> findAllByOrderByPointDesc(Pageable pageable);
 
 }

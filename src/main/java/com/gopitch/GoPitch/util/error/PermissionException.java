@@ -1,4 +1,4 @@
-package com.fourstars.FourStars.util.error;
+package com.gopitch.GoPitch.util.error;
 
 public class PermissionException extends Exception {
     public PermissionException(String message) {
