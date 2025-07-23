@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.fourstars.FourStars.domain.User;
-import com.fourstars.FourStars.repository.UserRepository;
-import com.fourstars.FourStars.service.StreakService;
-import com.fourstars.FourStars.util.SecurityUtil;
+import com.gopitch.GoPitch.domain.User;
+import com.gopitch.GoPitch.repository.UserRepository;
+import com.gopitch.GoPitch.service.StreakService;
+import com.gopitch.GoPitch.util.SecurityUtil;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

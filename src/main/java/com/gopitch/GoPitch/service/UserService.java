@@ -19,9 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.gopitch.GoPitch.domain.User;
+import com.gopitch.GoPitch.domain.request.auth.RegisterRequestDTO;
 import com.gopitch.GoPitch.domain.response.ResultPaginationDTO;
 import com.gopitch.GoPitch.domain.response.auth.ResCreateUserDTO;
+import com.gopitch.GoPitch.domain.response.user.UserResponseDTO;
 import com.gopitch.GoPitch.repository.UserRepository;
+import com.gopitch.GoPitch.util.error.DuplicateResourceException;
+import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -32,6 +36,36 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
+    @Transactional(readOnly = true)
+    public User handleGetUsername(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    @Transactional
+    public void updateUserToken(String refreshToken, String email) throws ResourceNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found with email: " + email + " for updating token."));
+        user.setRefreshToken(refreshToken);
+        userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByRefreshTokenAndEmail(String refreshToken, String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user != null && user.getRefreshToken() != null && user.getRefreshToken().equals(refreshToken)) {
+            return user;
+        }
+        return null;
+    }
+
+    @Transactional
+    public UserResponseDTO registerNewUser(RegisterRequestDTO registerDTO)
+            throws DuplicateResourceException, ResourceNotFoundException {
+        if (userRepository.existsByEmail(registerDTO.getEmail())) {
+            throw new DuplicateResourceException("Email '" + registerDTO.getEmail() + "' already exists.");
+        }
 
     @Override
     @Transactional(readOnly = true)

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Optional;
 
 import com.gopitch.GoPitch.domain.User;
 import com.gopitch.GoPitch.domain.request.auth.RegisterRequestDTO;
@@ -31,6 +32,9 @@ import com.gopitch.GoPitch.util.annotation.ApiMessage;
 import com.gopitch.GoPitch.util.error.BadRequestException;
 import com.gopitch.GoPitch.util.error.DuplicateResourceException;
 import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
+import org.springframework.security.oauth2.jwt.Jwt;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
