@@ -26,15 +26,46 @@ import com.gopitch.GoPitch.domain.response.user.UserResponseDTO;
 import com.gopitch.GoPitch.repository.UserRepository;
 import com.gopitch.GoPitch.util.error.DuplicateResourceException;
 import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
+import com.gopitch.GoPitch.repository.RoleRepository;
+import com.gopitch.GoPitch.domain.Role;
 
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+    }
+
+    private UserResponseDTO convertToUserResponseDTO(User user) {
+        if (user == null)
+            return null;
+        UserResponseDTO dto = new UserResponseDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setActive(user.isActive());
+        dto.setPoint(user.getPoint());
+        dto.setStreakCount(user.getStreakCount());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setUpdatedAt(user.getUpdatedAt());
+        dto.setCreatedBy(user.getCreatedBy());
+        dto.setUpdatedBy(user.getUpdatedBy());
+
+        if (user.getRole() != null) {
+            UserResponseDTO.RoleInfoDTO roleInfo = new UserResponseDTO.RoleInfoDTO();
+            roleInfo.setId(user.getRole().getId());
+            roleInfo.setName(user.getRole().getName());
+            dto.setRole(roleInfo);
+        }
+
+        return dto;
     }
 
     @Transactional(readOnly = true)
@@ -67,24 +98,51 @@ public class UserService implements UserDetailsService {
             throw new DuplicateResourceException("Email '" + registerDTO.getEmail() + "' already exists.");
         }
 
+        User newUser = new User();
+        newUser.setName(registerDTO.getName());
+        newUser.setEmail(registerDTO.getEmail());
+
+        newUser.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        newUser.setActive(true);
+        newUser.setPoint(0);
+
+        Long roleIdToAssign = registerDTO.getRoleId();
+        Role assignedRole;
+
+        if (roleIdToAssign == null) {
+            assignedRole = roleRepository.findByName("USER")
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Default role 'USER' not found. Please ensure it exists in the database."));
+        } else {
+
+            assignedRole = roleRepository.findById(roleIdToAssign)
+                    .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + roleIdToAssign));
+        }
+        newUser.setRole(assignedRole);
+
+        User savedUser = userRepository.save(newUser);
+
+        return convertToUserResponseDTO(savedUser);
+    }
+
     // Khởi tạo user mới
 
-    // @Override
-    // @Transactional(readOnly = true)
-    // public UserDetails loadUserByUsername(String username) throws
-    // UsernameNotFoundException {
-    // User user = userRepository.findByEmail(username)
-    // .orElseThrow(() -> new UsernameNotFoundException("User not found with email:
-    // " + username));
+    @Override
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
-    // List<GrantedAuthority> authorities = user.getRoles().stream()
-    // .map(role -> new SimpleGrantedAuthority(role.getName()))
-    // .collect(Collectors.toList());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (user.getRole() != null) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
+        }
 
-    // return new
-    // org.springframework.security.core.userdetails.User(user.getEmail(),
-    // user.getPassword(), authorities);
-    // }
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                authorities);
+    }
 
     // @Transactional
     // public UserResponseDTO createUser(CreateUserRequestDTO requestDTO)
@@ -131,9 +189,4 @@ public class UserService implements UserDetailsService {
         return new ResultPaginationDTO<>(meta, page.getContent());
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
-    }
 }

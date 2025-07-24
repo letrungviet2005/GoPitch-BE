@@ -66,6 +66,8 @@ public class AuthController {
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody ReqLoginDTO loginDTO) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginDTO.getUsername(), loginDTO.getPassword());
+        System.out.println(
+                "Login attempt for user: " + loginDTO.getUsername() + "and password: " + loginDTO.getPassword());
 
         Authentication authentication;
         try {
@@ -76,7 +78,7 @@ public class AuthController {
                 authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             }
         } catch (AuthenticationException e) {
-            throw new ResourceNotFoundException("Invalid username or password.");
+            throw new ResourceNotFoundException(e.getMessage());
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
