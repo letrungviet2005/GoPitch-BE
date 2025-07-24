@@ -67,36 +67,57 @@ public class UserService implements UserDetailsService {
             throw new DuplicateResourceException("Email '" + registerDTO.getEmail() + "' already exists.");
         }
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+    // Khởi tạo user mới
 
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+    // @Override
+    // @Transactional(readOnly = true)
+    // public UserDetails loadUserByUsername(String username) throws
+    // UsernameNotFoundException {
+    // User user = userRepository.findByEmail(username)
+    // .orElseThrow(() -> new UsernameNotFoundException("User not found with email:
+    // " + username));
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
-    }
+    // List<GrantedAuthority> authorities = user.getRoles().stream()
+    // .map(role -> new SimpleGrantedAuthority(role.getName()))
+    // .collect(Collectors.toList());
 
-    public ResCreateUserDTO createUser(ReqCreateUserDTO reqCreateUserDTO) {
-        User user = new User();
-        user.setEmail(reqCreateUserDTO.getEmail());
-        user.setName(reqCreateUserDTO.getName());
-        user.setPassword(passwordEncoder.encode(reqCreateUserDTO.getPassword()));
-        user.setCreatedAt(Instant.now());
+    // return new
+    // org.springframework.security.core.userdetails.User(user.getEmail(),
+    // user.getPassword(), authorities);
+    // }
 
-        User savedUser = userRepository.save(user);
+    // @Transactional
+    // public UserResponseDTO createUser(CreateUserRequestDTO requestDTO)
+    // throws DuplicateResourceException, ResourceNotFoundException {
+    // if (userRepository.existsByEmail(requestDTO.getEmail())) {
+    // throw new DuplicateResourceException("Email '" + requestDTO.getEmail() + "'
+    // already exists.");
+    // }
 
-        ResCreateUserDTO response = new ResCreateUserDTO();
-        response.setId(savedUser.getId());
-        response.setEmail(savedUser.getEmail());
-        response.setName(savedUser.getName());
-        response.setCreatedAt(savedUser.getCreatedAt());
+    // User user = new User();
+    // user.setName(requestDTO.getName());
+    // user.setEmail(requestDTO.getEmail());
+    // user.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
+    // user.setActive(requestDTO.isActive());
+    // user.setPoint(requestDTO.getPoint());
 
-        return response;
-    }
+    // Role role = roleRepository.findById(requestDTO.getRoleId())
+    // .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " +
+    // requestDTO.getRoleId()));
+    // user.setRole(role);
+
+    // if (requestDTO.getBadgeId() != null) {
+    // Badge badge = badgeRepository.findById(requestDTO.getBadgeId())
+    // .orElseThrow(
+    // () -> new ResourceNotFoundException("Badge not found with id: " +
+    // requestDTO.getBadgeId()));
+    // user.setBadge(badge);
+    // }
+
+    // User savedUser = userRepository.save(user);
+
+    // return convertToUserResponseDTO(savedUser);
+    // }
 
     public ResultPaginationDTO<User> getUsers(Pageable pageable) {
         Page<User> page = userRepository.findAll(pageable);
@@ -108,5 +129,11 @@ public class UserService implements UserDetailsService {
                 page.getTotalElements());
 
         return new ResultPaginationDTO<>(meta, page.getContent());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'loadUserByUsername'");
     }
 }
