@@ -89,13 +89,13 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @PrePersist
-    public void handleBeforeCreate() {
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-        this.createdAt = Instant.now();
-    }
+    // @PrePersist
+    // public void handleBeforeCreate() {
+    //     this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+    //             ? SecurityUtil.getCurrentUserLogin().get()
+    //             : "";
+    //     this.createdAt = Instant.now();
+    // }
 
     @PreUpdate
     public void handleBeforeUpdate() {
