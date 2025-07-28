@@ -1,7 +1,7 @@
 {
   "name": "gopitch",
   "version": "1.0.0",
-  "description": "\"# 4stars-english-BE\"",
+  "description": "\"# 4stars-gopitch-BE\"",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

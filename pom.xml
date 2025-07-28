@@ -9,8 +9,8 @@
 		<relativePath/>
 		<!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.fourstars</groupId>
-	<artifactId>FourStars</artifactId>
+	<groupId>com.gopitch</groupId>
+	<artifactId>GoPitch</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>FourStars</name>
 	<description>Demo project for Spring Boot</description>
