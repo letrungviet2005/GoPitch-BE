@@ -23,7 +23,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -32,36 +31,37 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.CascadeType;
 
 @Entity
-@Table(name = "calendars")
+@Table(name = "bills")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Calender {
+public class Bill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private boolean active = true;
+    private boolean status = false;
 
-    @Column(name = "created_by")
-    private String createdBy;
+    @Column(name = "created_at")
+    private String createdAt;
 
     @Column(name = "price")
     private double price;
 
-    @Column(name = "start_time")
-    private LocalDateTime startTime;
-
-    @Column(name = "end_time")
-    private LocalDateTime endTime;
-
-    // many calendar to one pitch
+    // many bill to one user
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pitch_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Pitch pitch;
+    private User user;
 
-    @OneToMany(mappedBy = "calendar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bill", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Placed> placeds;
+
+    // many bill to one club
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id", nullable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Club club;
+
 }

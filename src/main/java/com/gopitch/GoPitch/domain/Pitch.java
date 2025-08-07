@@ -27,6 +27,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Table(name = "pitches")
@@ -55,5 +57,14 @@ public class Pitch {
 
     @Column(name = "created_by")
     private String createdBy;
+
+    // many pitch to one club
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id", nullable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Club club;
+
+    @OneToMany(mappedBy = "pitch", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Calender> calendars;
 
 }

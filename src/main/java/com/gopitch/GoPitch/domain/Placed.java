@@ -32,36 +32,28 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.CascadeType;
 
 @Entity
-@Table(name = "calendars")
+@Table(name = "placed")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Calender {
+public class Placed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private boolean active = true;
+    private boolean status = false;
 
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "price")
-    private double price;
-
-    @Column(name = "start_time")
-    private LocalDateTime startTime;
-
-    @Column(name = "end_time")
-    private LocalDateTime endTime;
-
-    // many calendar to one pitch
+    // many placed to one bill
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pitch_id", nullable = false)
+    @JoinColumn(name = "bill_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Pitch pitch;
+    private Bill bill;
 
-    @OneToMany(mappedBy = "calendar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Placed> placeds;
+    // many placed to one calendar
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "calendar_id", nullable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Calender calendar;
+
 }
