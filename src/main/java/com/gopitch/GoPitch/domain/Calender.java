@@ -57,10 +57,10 @@ public class Calender {
     private LocalDateTime endTime;
 
     // many calendar to one pitch
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pitch_id", nullable = false)
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Pitch pitch;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "pitch_id", nullable = false)
+    // @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    // private Pitch pitch;
 
     @OneToMany(mappedBy = "calendar", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Placed> placeds;
