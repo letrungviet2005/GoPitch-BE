@@ -20,12 +20,15 @@ public class ClubService {
     @Transactional
     public ClubResponseDTO convertTClubResponseDTO(Club club) {
         ClubResponseDTO response = new ClubResponseDTO();
+        response.setId(club.getId());
         response.setName(club.getName());
         response.setDescription(club.getDescription());
         response.setAddress(club.getAddress());
         response.setPhoneNumber(club.getPhoneNumber());
         response.setImageUrl(club.getImageUrl());
         response.setActive(club.isActive());
+        response.setTimeStart(club.getTimeStart());
+        response.setTimeEnd(club.getTimeEnd());
 
         // Update user streak if applicable
         if (club.getUser() != null) {

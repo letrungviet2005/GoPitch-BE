@@ -54,7 +54,8 @@ public class Calender {
     private LocalDateTime startTime;
 
     @Column(name = "end_time")
-    private LocalDateTime endTime;git add
+    private LocalDateTime endTime;
+
     // many calendar to one pitch
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pitch_id", nullable = false)

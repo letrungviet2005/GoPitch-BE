@@ -71,6 +71,12 @@ public class Club {
     @Column(name = "imageUrl")
     private String imageUrl;
 
+    @Column(name = "timeStart")
+    private String timeStart;
+
+    @Column(name = "timeEnd")
+    private String timeEnd;
+
     // many club to one user
 
     @ManyToOne(fetch = FetchType.LAZY)
