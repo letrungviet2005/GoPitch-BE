@@ -68,8 +68,8 @@ public class Club {
     @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "image")
-    private String image;
+    @Column(name = "imageUrl")
+    private String imageUrl;
 
     // many club to one user
 
