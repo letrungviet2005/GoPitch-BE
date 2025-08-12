@@ -48,6 +48,13 @@ public class Club {
     @Size(max = 255, message = "Description cannot exceed 255 characters")
     private String description;
 
+    @NotBlank(message = "Address cannot be blank")
+    @Size(max = 255, message = "Address cannot exceed 255 characters")
+    private String address;
+
+    @NotBlank(message = "Phone number cannot be blank")
+    @Size(max = 15, message = "Phone number cannot exceed 15 characters")
+    private String phoneNumber;
     private boolean active = true;
 
     @Column(name = "created_at")
