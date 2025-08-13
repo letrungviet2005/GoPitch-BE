@@ -1,11 +1,24 @@
 package com.gopitch.GoPitch.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import jakarta.persistence.criteria.Predicate;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.gopitch.GoPitch.domain.Club;
+import com.gopitch.GoPitch.domain.request.club.ClubRequestDTO;
+import com.gopitch.GoPitch.domain.response.ResultPaginationDTO;
 import com.gopitch.GoPitch.domain.response.club.ClubResponseDTO;
 import com.gopitch.GoPitch.repository.ClubRepository;
-import com.gopitch.GoPitch.service.StreakService;
+import com.gopitch.GoPitch.util.error.BadRequestException;
+import com.gopitch.GoPitch.util.error.DuplicateResourceException;
+import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
 
 @Service
 public class ClubService {
@@ -17,8 +30,11 @@ public class ClubService {
         this.streakService = streakService;
     }
 
-    @Transactional
-    public ClubResponseDTO convertTClubResponseDTO(Club club) {
+    /** Chuyển entity sang DTO */
+    private ClubResponseDTO convertToClubResponseDTO(Club club) {
+        if (club == null)
+            return null;
+
         ClubResponseDTO response = new ClubResponseDTO();
         response.setId(club.getId());
         response.setName(club.getName());
@@ -30,7 +46,7 @@ public class ClubService {
         response.setTimeStart(club.getTimeStart());
         response.setTimeEnd(club.getTimeEnd());
 
-        // Update user streak if applicable
+        // Cập nhật streak cho user nếu có
         if (club.getUser() != null) {
             streakService.updateUserStreak(club.getUser());
         }
@@ -38,4 +54,95 @@ public class ClubService {
         return response;
     }
 
+    /** Tạo mới club */
+    @Transactional
+    public ClubResponseDTO createClub(ClubRequestDTO requestDTO)
+            throws DuplicateResourceException, BadRequestException {
+
+        if (clubRepository.existsByName(requestDTO.getName())) {
+            throw new DuplicateResourceException("Club with the same name already exists.");
+        }
+
+        Club club = new Club();
+        club.setName(requestDTO.getName());
+        club.setDescription(requestDTO.getDescription());
+        club.setAddress(requestDTO.getAddress());
+        club.setPhoneNumber(requestDTO.getPhoneNumber());
+        club.setImageUrl(requestDTO.getImageUrl());
+        club.setActive(requestDTO.isActive());
+        club.setTimeStart(requestDTO.getTimeStart());
+        club.setTimeEnd(requestDTO.getTimeEnd());
+
+        Club savedClub = clubRepository.save(club);
+        return convertToClubResponseDTO(savedClub);
+    }
+
+    /** Cập nhật club */
+    @Transactional
+    public ClubResponseDTO updateClub(long id, ClubRequestDTO requestDTO)
+            throws ResourceNotFoundException, DuplicateResourceException, BadRequestException {
+
+        Club clubDB = clubRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Club not found with id: " + id));
+
+        if (clubRepository.existsByNameAndIdNot(requestDTO.getName(), id)) {
+            throw new DuplicateResourceException("Club with the same name already exists.");
+        }
+
+        clubDB.setName(requestDTO.getName());
+        clubDB.setDescription(requestDTO.getDescription());
+        clubDB.setAddress(requestDTO.getAddress());
+        clubDB.setPhoneNumber(requestDTO.getPhoneNumber());
+        clubDB.setImageUrl(requestDTO.getImageUrl());
+        clubDB.setActive(requestDTO.isActive());
+        clubDB.setTimeStart(requestDTO.getTimeStart());
+        clubDB.setTimeEnd(requestDTO.getTimeEnd());
+
+        Club updatedClub = clubRepository.save(clubDB);
+        return convertToClubResponseDTO(updatedClub);
+    }
+
+    /** Xóa club */
+    @Transactional
+    public void deleteClub(long id) throws ResourceNotFoundException {
+        Club clubToDelete = clubRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Club not found with id: " + id));
+        clubRepository.delete(clubToDelete);
+    }
+
+    /** Lấy club theo id */
+    @Transactional(readOnly = true)
+    public ClubResponseDTO fetchClubById(long id) throws ResourceNotFoundException {
+        Club club = clubRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Club not found with id: " + id));
+        return convertToClubResponseDTO(club);
+    }
+
+    /** Lấy danh sách club có phân trang + lọc */
+    @Transactional(readOnly = true)
+    public ResultPaginationDTO<ClubResponseDTO> fetchAllClubs(Pageable pageable, String name, Boolean active) {
+        Specification<Club> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (name != null && !name.trim().isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("name")), "%" + name.trim().toLowerCase() + "%"));
+            }
+            if (active != null) {
+                predicates.add(cb.equal(root.get("active"), active));
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Page<Club> pageClub = clubRepository.findAll(spec, pageable);
+        List<ClubResponseDTO> clubDTOs = pageClub.getContent().stream()
+                .map(this::convertToClubResponseDTO)
+                .collect(Collectors.toList());
+
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta(
+                pageable.getPageNumber() + 1,
+                pageable.getPageSize(),
+                pageClub.getTotalPages(),
+                pageClub.getTotalElements());
+
+        return new ResultPaginationDTO<>(meta, clubDTOs);
+    }
 }

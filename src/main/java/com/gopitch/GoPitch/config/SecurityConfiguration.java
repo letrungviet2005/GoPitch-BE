@@ -51,15 +51,16 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
-            CustomAuthenticationEntryPoint customAuthenticationEntryPoint, StreakUpdateFilter streakUpdateFilter)
-            throws Exception {
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
+            StreakUpdateFilter streakUpdateFilter) throws Exception {
+
         String[] whiteList = {
                 "/api/v1/auth/login",
                 "/api/v1/auth/register",
                 "/api/v1/auth/refresh",
-                "/uploads/**"
-                // Thêm các endpoint public khác nếu có (ví dụ: Swagger UI, health check)
-                // "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                "/uploads/**",
+                "/error", // ← Thêm dòng này
+                "/favicon.ico" // ← Tuỳ chọn: tránh log lỗi favicon
         };
 
         http
@@ -68,20 +69,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         authz -> authz
                                 .requestMatchers(whiteList).permitAll()
-                                // .requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN") // Ví dụ,
-                                // hoặc dùng
-                                // hasRole("ADMIN") nếu
-                                // prefix là "ROLE_"
                                 .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2 -> oauth2 // oauth2 ở đây là OAuth2ResourceServerConfigurer
-                        .jwt(jwt -> jwt // jwt ở đây là JwtConfigurer
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter()) // Gọi trên JwtConfigurer
-                                                                                          // (jwt)
-                        )
-                        .authenticationEntryPoint(customAuthenticationEntryPoint) // Gọi trên
-                                                                                  // OAuth2ResourceServerConfigurer
-                                                                                  // (oauth2)
-                )
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
                 .formLogin(f -> f.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
