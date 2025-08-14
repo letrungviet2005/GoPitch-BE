@@ -68,6 +68,9 @@ public class Club {
     @Column(name = "created_by")
     private String createdBy;
 
+    @Column(name = "image_avatar")
+    private String imageAvatar;
+
     @Column(name = "imageUrl")
     private String imageUrl;
 

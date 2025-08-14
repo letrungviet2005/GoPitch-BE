@@ -11,6 +11,7 @@ public class ClubResponseDTO {
     private String description;
     private String address;
     private String phoneNumber;
+    private String imageAvatar; // Changed to imageAvatar for consistency
     private String imageUrl;
     private boolean isActive = true;
     private String timeStart;

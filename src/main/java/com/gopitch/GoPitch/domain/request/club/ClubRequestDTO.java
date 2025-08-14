@@ -33,6 +33,9 @@ public class ClubRequestDTO {
     private String phoneNumber;
 
     @Size(max = 255, message = "Image URL must not exceed 255 characters")
+    private String imageAvatar;
+
+    @Size(max = 255, message = "Image URL must not exceed 255 characters")
     private String imageUrl;
 
     @NotNull(message = "Active status is required")

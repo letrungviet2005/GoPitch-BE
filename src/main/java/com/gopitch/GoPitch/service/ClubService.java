@@ -42,6 +42,7 @@ public class ClubService {
         response.setAddress(club.getAddress());
         response.setPhoneNumber(club.getPhoneNumber());
         response.setImageUrl(club.getImageUrl());
+        response.setImageAvatar(club.getImageAvatar()); // Changed to imageAvatar for consistency
         response.setActive(club.isActive());
         response.setTimeStart(club.getTimeStart());
         response.setTimeEnd(club.getTimeEnd());
@@ -68,6 +69,7 @@ public class ClubService {
         club.setDescription(requestDTO.getDescription());
         club.setAddress(requestDTO.getAddress());
         club.setPhoneNumber(requestDTO.getPhoneNumber());
+        club.setImageAvatar(requestDTO.getImageAvatar()); // Changed to imageAvatar for consistency
         club.setImageUrl(requestDTO.getImageUrl());
         club.setActive(requestDTO.isActive());
         club.setTimeStart(requestDTO.getTimeStart());
@@ -93,6 +95,7 @@ public class ClubService {
         clubDB.setDescription(requestDTO.getDescription());
         clubDB.setAddress(requestDTO.getAddress());
         clubDB.setPhoneNumber(requestDTO.getPhoneNumber());
+        clubDB.setImageAvatar(requestDTO.getImageAvatar()); // Changed to imageAvatar for consistency
         clubDB.setImageUrl(requestDTO.getImageUrl());
         clubDB.setActive(requestDTO.isActive());
         clubDB.setTimeStart(requestDTO.getTimeStart());
