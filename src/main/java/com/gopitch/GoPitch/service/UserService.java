@@ -126,8 +126,7 @@ public class UserService implements UserDetailsService {
         return convertToUserResponseDTO(savedUser);
     }
 
-    // Khởi tạo user mới
-
+    // description: This method is used to load user details by username (email).
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

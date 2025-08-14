@@ -21,26 +21,26 @@ public class ClubRequestDTO {
 
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name must not exceed 100 characters")
-    private String name; // Tên câu lạc bộ
+    private String name;
 
     @Size(max = 500, message = "Description must not exceed 500 characters")
-    private String description; // Mô tả câu lạc bộ
+    private String description;
 
     @Size(max = 255, message = "Address must not exceed 255 characters")
-    private String address; // Địa chỉ
+    private String address;
 
     @Pattern(regexp = "^(\\+?[0-9]{7,15})?$", message = "Invalid phone number format")
-    private String phoneNumber; // Số điện thoại (có thể null)
+    private String phoneNumber;
 
     @Size(max = 255, message = "Image URL must not exceed 255 characters")
-    private String imageUrl; // Link ảnh
+    private String imageUrl;
 
     @NotNull(message = "Active status is required")
-    private boolean active = true; // Trạng thái hoạt động
+    private boolean active = true;
 
     @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format, must be HH:mm")
-    private String timeStart; // Giờ bắt đầu (HH:mm)
+    private String timeStart;
 
     @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format, must be HH:mm")
-    private String timeEnd; // Giờ kết thúc (HH:mm)
+    private String timeEnd;
 }
