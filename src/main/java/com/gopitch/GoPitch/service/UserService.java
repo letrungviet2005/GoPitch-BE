@@ -28,6 +28,7 @@ import com.gopitch.GoPitch.util.error.DuplicateResourceException;
 import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
 import com.gopitch.GoPitch.repository.RoleRepository;
 import com.gopitch.GoPitch.domain.Role;
+import com.gopitch.GoPitch.domain.request.user.CreateUserRequestDTO;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -144,38 +145,29 @@ public class UserService implements UserDetailsService {
                 authorities);
     }
 
-    // @Transactional
-    // public UserResponseDTO createUser(CreateUserRequestDTO requestDTO)
-    // throws DuplicateResourceException, ResourceNotFoundException {
-    // if (userRepository.existsByEmail(requestDTO.getEmail())) {
-    // throw new DuplicateResourceException("Email '" + requestDTO.getEmail() + "'
-    // already exists.");
-    // }
+    @Transactional
+    public UserResponseDTO createUser(CreateUserRequestDTO requestDTO)
+            throws DuplicateResourceException, ResourceNotFoundException {
+        if (userRepository.existsByEmail(requestDTO.getEmail())) {
+            throw new DuplicateResourceException("Email '" + requestDTO.getEmail() + "already exists.");
+        }
 
-    // User user = new User();
-    // user.setName(requestDTO.getName());
-    // user.setEmail(requestDTO.getEmail());
-    // user.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
-    // user.setActive(requestDTO.isActive());
-    // user.setPoint(requestDTO.getPoint());
+        User user = new User();
+        user.setName(requestDTO.getName());
+        user.setEmail(requestDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
+        user.setActive(requestDTO.isActive());
+        user.setPoint(requestDTO.getPoint());
 
-    // Role role = roleRepository.findById(requestDTO.getRoleId())
-    // .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " +
-    // requestDTO.getRoleId()));
-    // user.setRole(role);
+        Role role = roleRepository.findById(requestDTO.getRoleId())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " +
+                        requestDTO.getRoleId()));
+        user.setRole(role);
 
-    // if (requestDTO.getBadgeId() != null) {
-    // Badge badge = badgeRepository.findById(requestDTO.getBadgeId())
-    // .orElseThrow(
-    // () -> new ResourceNotFoundException("Badge not found with id: " +
-    // requestDTO.getBadgeId()));
-    // user.setBadge(badge);
-    // }
+        User savedUser = userRepository.save(user);
 
-    // User savedUser = userRepository.save(user);
-
-    // return convertToUserResponseDTO(savedUser);
-    // }
+        return convertToUserResponseDTO(savedUser);
+    }
 
     public ResultPaginationDTO<User> getUsers(Pageable pageable) {
         Page<User> page = userRepository.findAll(pageable);
