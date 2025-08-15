@@ -30,6 +30,7 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.CascadeType;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -38,5 +39,31 @@ import jakarta.persistence.CascadeType;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @NotBlank(message = "Content cannot be blank")
+    @Size(max = 500, message = "Content cannot exceed 500 characters")
+    private String content;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "rate")
+    private int rate;
+
+    // many comments to one user
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private User user;
+
+    // many comments to one clubs
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id", nullable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Club club;
 
 }
