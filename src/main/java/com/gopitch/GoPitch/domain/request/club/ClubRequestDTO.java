@@ -38,6 +38,17 @@ public class ClubRequestDTO {
     @Size(max = 255, message = "Image URL must not exceed 255 characters")
     private String imageUrl;
 
+    @Size(max = 255, message = "Image URL must not exceed 255 characters")
+    private String imageUrl1;
+    @Size(max = 255, message = "Image URL must not exceed 255 characters")
+    private String imageUrl2;
+    @Size(max = 255, message = "Image URL must not exceed 255 characters")
+    private String imageUrl3;
+    @Size(max = 255, message = "Image URL must not exceed 255 characters")
+    private String imageUrl4;
+    @Size(max = 255, message = "Image URL must not exceed 255 characters")
+    private String imageUrl5;
+
     @NotNull(message = "Active status is required")
     private boolean active = true;
 
