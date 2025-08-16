@@ -1,6 +1,7 @@
 package com.gopitch.GoPitch.domain;
 
 import java.time.Instant;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -87,10 +88,10 @@ public class Club {
     private String imageUrl5;
 
     @Column(name = "timeStart")
-    private String timeStart;
+    private LocalTime timeStart;
 
     @Column(name = "timeEnd")
-    private String timeEnd;
+    private LocalTime timeEnd;
 
     // many club to one user
 

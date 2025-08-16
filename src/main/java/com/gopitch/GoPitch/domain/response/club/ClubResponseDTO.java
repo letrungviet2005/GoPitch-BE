@@ -1,5 +1,7 @@
 package com.gopitch.GoPitch.domain.response.club;
 
+import java.time.LocalTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +21,7 @@ public class ClubResponseDTO {
     private String imageUrl4;
     private String imageUrl5;
     private boolean isActive = true;
-    private String timeStart;
-    private String timeEnd;
+    private LocalTime timeStart;
+    private LocalTime timeEnd;
 
 }
