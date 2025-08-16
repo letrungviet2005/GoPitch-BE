@@ -1,5 +1,7 @@
 package com.gopitch.GoPitch.domain.response.club;
 
+import java.time.LocalTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +11,6 @@ public class PitchPriceResponseDTO {
     private long id;
     private String name;
     private double price;
-    private String timeStart;
-    private String timeEnd;
+    private LocalTime timeStart;
+    private LocalTime timeEnd;
 }

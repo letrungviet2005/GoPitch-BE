@@ -2,6 +2,7 @@ package com.gopitch.GoPitch.domain;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -55,12 +56,12 @@ public class PitchPrice {
     @Column(name = "timeStart")
     @NotBlank(message = "Start time cannot be blank")
     @Size(max = 5, message = "Start time cannot exceed 5 characters")
-    private String timeStart;
+    private LocalTime timeStart;
 
     @Column(name = "timeEnd")
     @NotBlank(message = "End time cannot be blank")
     @Size(max = 5, message = "End time cannot exceed 5 characters")
-    private String timeEnd;
+    private LocalTime timeEnd;
 
     @Column(name = "created_at")
     private Instant createdAt;

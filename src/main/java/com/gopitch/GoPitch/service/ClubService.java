@@ -46,7 +46,7 @@ public class ClubService {
         response.setImageUrl3(club.getImageUrl3());
         response.setImageUrl4(club.getImageUrl4());
         response.setImageUrl5(club.getImageUrl5());
-        response.setImageAvatar(club.getImageAvatar()); // Changed to imageAvatar for consistency
+        response.setImageAvatar(club.getImageAvatar());
         response.setActive(club.isActive());
         response.setTimeStart(club.getTimeStart());
         response.setTimeEnd(club.getTimeEnd());
