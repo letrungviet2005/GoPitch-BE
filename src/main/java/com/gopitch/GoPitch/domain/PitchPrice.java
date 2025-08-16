@@ -67,8 +67,8 @@ public class PitchPrice {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id", nullable = false)
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Club club;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "club_id", nullable = false)
+    // @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    // private Club club;
 }
