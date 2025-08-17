@@ -15,11 +15,17 @@ import com.gopitch.GoPitch.domain.Club;
 import com.gopitch.GoPitch.domain.request.club.ClubRequestDTO;
 import com.gopitch.GoPitch.domain.response.ResultPaginationDTO;
 import com.gopitch.GoPitch.domain.response.club.ClubResponseDTO;
+import com.gopitch.GoPitch.domain.response.comment.CommentResponseDTO;
+import com.gopitch.GoPitch.domain.response.user.UserSummaryDTO;
 import com.gopitch.GoPitch.repository.ClubRepository;
 import com.gopitch.GoPitch.util.error.BadRequestException;
 import com.gopitch.GoPitch.util.error.DuplicateResourceException;
 import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
 import com.gopitch.GoPitch.domain.Comment;
+import com.gopitch.GoPitch.service.StreakService;
+import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
+import com.gopitch.GoPitch.domain.response.comment.CommentResponseDTO;
+import com.gopitch.GoPitch.domain.User;
 
 @Service
 public class ClubService {
@@ -159,10 +165,27 @@ public class ClubService {
     }
 
     @Transactional(readOnly = true)
-    public List<Comment> fetchCommentsByClubId(long clubId) {
-        // Implement logic to fetch comments by club ID if needed
+    public List<CommentResponseDTO> fetchCommentsByClubId(long clubId) {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new ResourceNotFoundException("Club not found with id: " + clubId));
-        return club.getComments() != null ? club.getComments() : new ArrayList<>();
+
+        return club.getComments().stream()
+                .map(comment -> {
+                    User user = comment.getUser();
+                    UserSummaryDTO userDto = new UserSummaryDTO(
+                            user.getId(),
+                            user.getName(),
+                            user.getEmail(),
+                            user.getPoint(),
+                            user.getRole() != null ? user.getRole().getName() : null);
+
+                    return new CommentResponseDTO(
+                            comment.getId(),
+                            comment.getContent(),
+                            comment.getRate(),
+                            comment.getCreatedAt(),
+                            userDto);
+                })
+                .toList();
     }
 }
