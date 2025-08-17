@@ -1,4 +1,4 @@
-package com.gopitch.GoPitch.domain.response.club;
+package com.gopitch.GoPitch.domain.response.pitchprice;
 
 import java.time.LocalTime;
 

@@ -1,4 +1,4 @@
-package com.gopitch.GoPitch.domain.response.club;
+package com.gopitch.GoPitch.domain.response.comment;
 
 import lombok.Getter;
 import lombok.Setter;
