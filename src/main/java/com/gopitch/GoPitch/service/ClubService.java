@@ -19,6 +19,7 @@ import com.gopitch.GoPitch.repository.ClubRepository;
 import com.gopitch.GoPitch.util.error.BadRequestException;
 import com.gopitch.GoPitch.util.error.DuplicateResourceException;
 import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
+import com.gopitch.GoPitch.domain.Comment;
 
 @Service
 public class ClubService {
@@ -155,5 +156,13 @@ public class ClubService {
                 pageClub.getTotalElements());
 
         return new ResultPaginationDTO<>(meta, clubDTOs);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Comment> fetchCommentsByClubId(long clubId) {
+        // Implement logic to fetch comments by club ID if needed
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new ResourceNotFoundException("Club not found with id: " + clubId));
+        return club.getComments() != null ? club.getComments() : new ArrayList<>();
     }
 }
