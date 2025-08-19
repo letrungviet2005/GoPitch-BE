@@ -23,7 +23,10 @@ public class ClubController {
     @GetMapping("/{id}")
     @ApiMessage("Fetch a club by its ID")
     public ResponseEntity<ClubResponseDTO> getClubById(@PathVariable long id) throws ResourceNotFoundException {
-        ClubResponseDTO club = clubService.fetchClubById(id);
+        ClubResponseDTO club = clubService.getClubById(id);
+        if (club == null) {
+            throw new ResourceNotFoundException("Club not found with ID: " + id);
+        }
         return ResponseEntity.ok(club);
     }
 
