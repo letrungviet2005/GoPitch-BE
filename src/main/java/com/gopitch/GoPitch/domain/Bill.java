@@ -59,9 +59,9 @@ public class Bill {
     private List<Placed> placeds;
 
     // many bill to one club
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "club_id", nullable = false)
-    // @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    // private Club club;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id", nullable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Club club;
 
 }
