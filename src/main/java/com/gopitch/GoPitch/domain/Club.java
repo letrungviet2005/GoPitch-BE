@@ -109,7 +109,8 @@ public class Club {
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PitchPrice> pitchPrices;
+    // @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade =
+    // CascadeType.ALL)
+    // private List<PitchPrice> pitchPrices;
 
 }
