@@ -72,4 +72,8 @@ public class PitchPrice {
     @JoinColumn(name = "club_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Club club;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pitch_id", nullable = false)
+    private Pitch pitch;
 }

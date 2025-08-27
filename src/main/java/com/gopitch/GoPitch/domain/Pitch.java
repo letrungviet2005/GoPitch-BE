@@ -67,4 +67,7 @@ public class Pitch {
     @OneToMany(mappedBy = "pitch", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Calender> calendars;
 
+    @OneToMany(mappedBy = "pitch", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PitchPrice> pitchPrices;
+
 }
