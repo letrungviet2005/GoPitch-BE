@@ -31,6 +31,7 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.CascadeType;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pitch_prices")
@@ -53,14 +54,12 @@ public class PitchPrice {
     @Size(max = 10, message = "Price cannot exceed 10 characters")
     private double price;
 
-    @Column(name = "timeStart")
-    @NotBlank(message = "Start time cannot be blank")
-    @Size(max = 5, message = "Start time cannot exceed 5 characters")
+    @Column(name = "timeStart", nullable = false)
+    @NotNull(message = "Start time cannot be null")
     private LocalTime timeStart;
 
-    @Column(name = "timeEnd")
-    @NotBlank(message = "End time cannot be blank")
-    @Size(max = 5, message = "End time cannot exceed 5 characters")
+    @Column(name = "timeEnd", nullable = false)
+    @NotNull(message = "End time cannot be null")
     private LocalTime timeEnd;
 
     @Column(name = "created_at")
@@ -75,5 +74,6 @@ public class PitchPrice {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pitch_id", nullable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Pitch pitch;
 }
