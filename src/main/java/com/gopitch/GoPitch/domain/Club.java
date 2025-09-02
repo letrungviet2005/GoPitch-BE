@@ -72,21 +72,6 @@ public class Club {
     @Column(name = "image_avatar")
     private String imageAvatar;
 
-    @Column(name = "imageUrl")
-    private String imageUrl;
-
-    @Column(name = "imageUrl2")
-    private String imageUrl2;
-
-    @Column(name = "imageUrl3")
-    private String imageUrl3;
-
-    @Column(name = "imageUrl4")
-    private String imageUrl4;
-
-    @Column(name = "imageUrl5")
-    private String imageUrl5;
-
     @Column(name = "timeStart")
     private LocalTime timeStart;
 
