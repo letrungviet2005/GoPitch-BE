@@ -137,12 +137,12 @@ public class ClubService {
                 .map(this::convertToClubResponseDTO)
                 .collect(Collectors.toList());
 
-        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta(
-                pageable.getPageNumber() + 1,
-                pageable.getPageSize(),
-                pageClub.getTotalPages(),
-                pageClub.getTotalElements());
+        // ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta(
+        // pageable.getPageNumber() + 1,
+        // pageable.getPageSize(),
+        // pageClub.getTotalPages(),
+        // pageClub.getTotalElements());
 
-        return new ResultPaginationDTO<>(meta, clubDTOs);
+        // return new ResultPaginationDTO<>(meta, clubDTOs);
     }
 }

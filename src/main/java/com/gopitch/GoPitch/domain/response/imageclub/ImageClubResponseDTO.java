@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ImageClubResponseDTO {
 
-    // private long id;
-    // private String imageUrl;
-    // private long clubId;
+    private long id;
+    private String imageUrl;
+    private long clubId;
 }
