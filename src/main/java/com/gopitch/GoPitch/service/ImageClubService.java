@@ -1,3 +1,5 @@
+package com.gopitch.GoPitch.service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +19,18 @@ public class ImageClubService {
     public ImageClubService(ClubService clubService, ImageClubRepository imageClubRepository) {
         this.clubService = clubService;
         this.imageClubRepository = imageClubRepository;
+    }
+
+    private ImageClub convertToImageClub(ImageClub imageClub) {
+        if (imageClub == null)
+            return null;
+
+        ImageClub response = new ImageClub();
+        response.setId(imageClub.getId());
+        response.setUrl(imageClub.getUrl());
+        response.setClub(imageClub.getClub());
+
+        return response;
     }
 
 }
