@@ -27,7 +27,7 @@ public class ImageClubService {
 
         ImageClub response = new ImageClub();
         response.setId(imageClub.getId());
-        response.setUrl(imageClub.getUrl());
+        response.setImageUrl(imageClub.getImageUrl());
         response.setClub(imageClub.getClub());
 
         return response;
