@@ -9,4 +9,12 @@ import java.util.Optional;
 @Repository
 public interface PlacedRepository extends JpaRepository<Club, Long>, JpaSpecificationExecutor<Club> {
 
+    Optional<Club> findByName(String name);
+
+    // Kiểm tra tồn tại theo tên
+    boolean existsByName(String name);
+
+    // Kiểm tra tồn tại theo tên nhưng loại trừ id hiện tại
+    boolean existsByNameAndIdNot(String name, Long id);
+
 }
