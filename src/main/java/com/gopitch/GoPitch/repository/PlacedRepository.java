@@ -14,7 +14,7 @@ public interface PlacedRepository extends JpaRepository<Club, Long>, JpaSpecific
     // Kiểm tra tồn tại theo tên
     boolean existsByName(String name);
 
-    // // Kiểm tra tồn tại theo tên nhưng loại trừ id hiện tại
+    // Kiểm tra tồn tại theo tên nhưng loại trừ id hiện tại
     boolean existsByNameAndIdNot(String name, Long id);
 
 }
