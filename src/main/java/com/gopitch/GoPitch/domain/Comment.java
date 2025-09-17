@@ -64,6 +64,6 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Club club;
+    // private Club club;
 
 }
