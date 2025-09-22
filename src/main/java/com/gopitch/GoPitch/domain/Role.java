@@ -92,9 +92,9 @@ public class Role {
         permission.getRoles().add(this);
     }
 
-    public void removePermission(Permission permission) {
-        this.permissions.remove(permission);
-        permission.getRoles().remove(this);
-    }
+    // public void removePermission(Permission permission) {
+    //     this.permissions.remove(permission);
+    //     permission.getRoles().remove(this);
+    // }
 
 }
