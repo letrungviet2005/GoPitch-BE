@@ -106,11 +106,11 @@ public class User {
         this.createdAt = Instant.now();
     }
 
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
-                ? SecurityUtil.getCurrentUserLogin().get()
-                : "";
-        this.updatedAt = Instant.now();
-    }
+    // @PreUpdate
+    // public void handleBeforeUpdate() {
+    // this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+    // ? SecurityUtil.getCurrentUserLogin().get()
+    // : "";
+    // this.updatedAt = Instant.now();
+    // }
 }
