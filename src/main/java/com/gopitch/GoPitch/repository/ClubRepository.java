@@ -10,10 +10,10 @@ import java.util.Optional;
 public interface ClubRepository extends JpaRepository<Club, Long>, JpaSpecificationExecutor<Club> {
 
     Optional<Club> findByName(String name);
-
+ 
     // Kiểm tra tồn tại theo tên
     boolean existsByName(String name);
 
     // Kiểm tra tồn tại theo tên nhưng loại trừ id hiện tại
-    boolean existsByNameAndIdNot(String name, Long id);
+    // boolean existsByNameAndIdNot(String name, Long id);
 }
