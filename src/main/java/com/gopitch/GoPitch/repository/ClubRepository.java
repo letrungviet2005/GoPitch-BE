@@ -15,5 +15,5 @@ public interface ClubRepository extends JpaRepository<Club, Long>, JpaSpecificat
     boolean existsByName(String name);
 
     // Kiểm tra tồn tại theo tên nhưng loại trừ id hiện tại
-    // boolean existsByNameAndIdNot(String name, Long id);
+    boolean existsByNameAndIdNot(String name, Long id);
 }
