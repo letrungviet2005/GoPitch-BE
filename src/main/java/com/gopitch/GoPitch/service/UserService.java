@@ -168,16 +168,16 @@ public class UserService implements UserDetailsService {
         return convertToUserResponseDTO(savedUser);
     }
 
-    // public ResultPaginationDTO<User> getUsers(Pageable pageable) {
-    //     Page<User> page = userRepository.findAll(pageable);
+    public ResultPaginationDTO<User> getUsers(Pageable pageable) {
+        Page<User> page = userRepository.findAll(pageable);
 
-    //     ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta(
-    //             page.getNumber() + 1, // page starts from 0
-    //             page.getSize(),
-    //             page.getTotalPages(),
-    //             page.getTotalElements());
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta(
+                page.getNumber() + 1, // page starts from 0
+                page.getSize(),
+                page.getTotalPages(),
+                page.getTotalElements());
 
-    //     return new ResultPaginationDTO<>(meta, page.getContent());
-    // }
+        return new ResultPaginationDTO<>(meta, page.getContent());
+    }
 
 }
