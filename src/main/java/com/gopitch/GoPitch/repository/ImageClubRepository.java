@@ -12,6 +12,4 @@ public interface ImageClubRepository extends JpaRepository<ImageClub, Long> {
     boolean existsByUrl(String url);
 
     boolean existsByUrlAndIdNot(String url, Long id);
-    
-
 }
