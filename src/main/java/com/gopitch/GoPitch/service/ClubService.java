@@ -42,9 +42,9 @@ public class ClubService {
         response.setAddress(club.getAddress());
         response.setPhoneNumber(club.getPhoneNumber());
         response.setImageAvatar(club.getImageAvatar());
-        // response.setActive(club.isActive());
-        // response.setTimeStart(club.getTimeStart());
-        // response.setTimeEnd(club.getTimeEnd());
+        response.setActive(club.isActive());
+        response.setTimeStart(club.getTimeStart());
+        response.setTimeEnd(club.getTimeEnd());
 
         // Cập nhật streak cho user nếu có
         if (club.getUser() != null) {
