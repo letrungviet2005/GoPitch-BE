@@ -23,6 +23,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -50,8 +51,8 @@ public class PitchPrice {
     private String name;
 
     @Column(name = "price")
-    @NotBlank(message = "Price cannot be blank")
-    @Size(max = 10, message = "Price cannot exceed 10 characters")
+    @NotNull(message = "Price cannot be null")
+    @Min(value = 0, message = "Price must be positive")
     private double price;
 
     @Column(name = "timeStart", nullable = false)
@@ -67,11 +68,13 @@ public class PitchPrice {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Club club;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pitch_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })

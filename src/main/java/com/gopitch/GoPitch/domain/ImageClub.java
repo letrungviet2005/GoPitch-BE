@@ -47,6 +47,7 @@ public class ImageClub {
     private String imageUrl;
 
     // many images to one club
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })

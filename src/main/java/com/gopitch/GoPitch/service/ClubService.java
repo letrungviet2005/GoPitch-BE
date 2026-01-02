@@ -30,12 +30,12 @@ public class ClubService {
         this.streakService = streakService;
     }
 
-    /** Chuyển entity sang DTO */
     private ClubResponseDTO convertToClubResponseDTO(Club club) {
         if (club == null)
             return null;
 
         ClubResponseDTO response = new ClubResponseDTO();
+        // ... (Giữ nguyên các trường cũ) ...
         response.setId(club.getId());
         response.setName(club.getName());
         response.setDescription(club.getDescription());
@@ -46,7 +46,39 @@ public class ClubService {
         response.setTimeStart(club.getTimeStart());
         response.setTimeEnd(club.getTimeEnd());
 
-        // Cập nhật streak cho user nếu có
+        // 1. Map Pitch Prices
+        if (club.getPitchPrices() != null) {
+            response.setPitchPrices(club.getPitchPrices().stream().map(pp -> {
+                ClubResponseDTO.PitchPriceDTO dto = new ClubResponseDTO.PitchPriceDTO();
+                dto.setName(pp.getName());
+                dto.setPrice(pp.getPrice());
+                dto.setTimeStart(pp.getTimeStart());
+                dto.setTimeEnd(pp.getTimeEnd());
+                return dto;
+            }).collect(Collectors.toList()));
+        }
+
+        // 2. Map Image Clubs
+        if (club.getImageClubs() != null) {
+            response.setImageClubs(club.getImageClubs().stream().map(img -> {
+                ClubResponseDTO.ImageClubDTO dto = new ClubResponseDTO.ImageClubDTO();
+                dto.setImageUrl(img.getImageUrl());
+                return dto;
+            }).collect(Collectors.toList()));
+        }
+
+        // 3. Map Comments
+        if (club.getComments() != null) {
+            response.setComments(club.getComments().stream().map(cmt -> {
+                ClubResponseDTO.CommentDTO dto = new ClubResponseDTO.CommentDTO();
+                dto.setId(cmt.getId());
+                dto.setContent(cmt.getContent());
+                dto.setRate(cmt.getRate());
+                dto.setUserName(cmt.getUser() != null ? cmt.getUser().getName() : "Ẩn danh");
+                return dto;
+            }).collect(Collectors.toList()));
+        }
+
         if (club.getUser() != null) {
             streakService.updateUserStreak(club.getUser());
         }
@@ -102,20 +134,20 @@ public class ClubService {
         return convertToClubResponseDTO(updatedClub);
     }
 
+    /** Lấy club theo id */
+    @Transactional(readOnly = true)
+    public ClubResponseDTO getClubById(long id) throws ResourceNotFoundException { // Đổi fetch thành get
+        Club club = clubRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Club not found with id: " + id));
+        return convertToClubResponseDTO(club);
+    }
+
     /** Xóa club */
     @Transactional
     public void deleteClub(long id) throws ResourceNotFoundException {
         Club clubToDelete = clubRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Club not found with id: " + id));
         clubRepository.delete(clubToDelete);
-    }
-
-    /** Lấy club theo id */
-    @Transactional(readOnly = true)
-    public ClubResponseDTO fetchClubById(long id) throws ResourceNotFoundException {
-        Club club = clubRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Club not found with id: " + id));
-        return convertToClubResponseDTO(club);
     }
 
     /** Lấy danh sách club có phân trang + lọc */

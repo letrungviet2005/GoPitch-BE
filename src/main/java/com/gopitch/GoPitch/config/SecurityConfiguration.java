@@ -59,8 +59,8 @@ public class SecurityConfiguration {
                 "/api/v1/auth/register",
                 "/api/v1/auth/refresh",
                 "/uploads/**",
-                "/error", // ← Thêm dòng này
-                "/favicon.ico" // ← Tuỳ chọn: tránh log lỗi favicon
+                "/error",
+                "/favicon.ico"
         };
 
         http

@@ -59,6 +59,7 @@ public class Pitch {
     private String createdBy;
 
     // many pitch to one club
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })

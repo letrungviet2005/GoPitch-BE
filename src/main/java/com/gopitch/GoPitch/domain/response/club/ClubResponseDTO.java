@@ -4,7 +4,10 @@ import java.time.LocalTime;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Data;
+import java.util.List;
 
+// Trong file ClubResponseDTO.java
 @Getter
 @Setter
 public class ClubResponseDTO {
@@ -13,9 +16,33 @@ public class ClubResponseDTO {
     private String description;
     private String address;
     private String phoneNumber;
-    private String imageAvatar; // Changed to imageAvatar for consistency
-    private boolean isActive = true;
+    private String imageAvatar;
+    private boolean active;
     private LocalTime timeStart;
     private LocalTime timeEnd;
 
+    private List<PitchPriceDTO> pitchPrices;
+    private List<ImageClubDTO> imageClubs;
+    private List<CommentDTO> comments;
+
+    @Data
+    public static class PitchPriceDTO {
+        private String name;
+        private double price;
+        private LocalTime timeStart;
+        private LocalTime timeEnd;
+    }
+
+    @Data
+    public static class ImageClubDTO {
+        private String imageUrl;
+    }
+
+    @Data
+    public static class CommentDTO {
+        private long id;
+        private String content;
+        private int rate;
+        private String userName;
+    }
 }

@@ -9,7 +9,5 @@ public interface ImageClubRepository extends JpaRepository<ImageClub, Long> {
     // Additional query methods can be defined here if needed
     boolean existsById(long id);
 
-    boolean existsByUrl(String url);
-
-    boolean existsByUrlAndIdNot(String url, Long id);
+    boolean existsByImageUrlAndIdNot(String imageUrl, Long id);
 }
