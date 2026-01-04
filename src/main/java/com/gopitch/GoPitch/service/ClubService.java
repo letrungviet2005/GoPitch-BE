@@ -79,6 +79,17 @@ public class ClubService {
             }).collect(Collectors.toList()));
         }
 
+        // 4. Map Pitches (Sân con) - THÊM ĐOẠN NÀY VÀO
+        if (club.getPitches() != null) {
+            response.setPitches(club.getPitches().stream().map(p -> {
+                ClubResponseDTO.PitchDTO dto = new ClubResponseDTO.PitchDTO();
+                dto.setId(p.getId());
+                dto.setName(p.getName());
+                dto.setActive(p.isActive());
+                return dto;
+            }).collect(Collectors.toList()));
+        }
+
         if (club.getUser() != null) {
             streakService.updateUserStreak(club.getUser());
         }
@@ -176,5 +187,28 @@ public class ClubService {
                 pageClub.getTotalElements());
 
         return new ResultPaginationDTO<>(meta, clubDTOs);
+    }
+
+    public ResultPaginationDTO<ClubResponseDTO> searchClubs(String keyword, Pageable pageable) {
+        // 1. Lấy dữ liệu từ Repo
+        Page<Club> pageClubs = this.clubRepository.findByNameContainingIgnoreCase(keyword, pageable);
+
+        List<ClubResponseDTO> listDTO = pageClubs.getContent()
+                .stream()
+                .map(this::convertToClubResponseDTO)
+                .collect(Collectors.toList());
+
+        ResultPaginationDTO<ClubResponseDTO> rs = new ResultPaginationDTO<>();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
+
+        mt.setPage(pageable.getPageNumber() + 1);
+        mt.setPageSize(pageable.getPageSize());
+        mt.setPages(pageClubs.getTotalPages());
+        mt.setTotal(pageClubs.getTotalElements());
+
+        rs.setMeta(mt);
+        rs.setResult(listDTO);
+
+        return rs;
     }
 }

@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -97,6 +98,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserInformation userInformation;
 
     @PrePersist
     public void handleBeforeCreate() {

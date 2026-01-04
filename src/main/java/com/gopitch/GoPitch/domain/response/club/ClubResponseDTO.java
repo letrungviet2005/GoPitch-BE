@@ -1,13 +1,11 @@
 package com.gopitch.GoPitch.domain.response.club;
 
 import java.time.LocalTime;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Data;
 import java.util.List;
 
-// Trong file ClubResponseDTO.java
 @Getter
 @Setter
 public class ClubResponseDTO {
@@ -21,9 +19,19 @@ public class ClubResponseDTO {
     private LocalTime timeStart;
     private LocalTime timeEnd;
 
+    // Danh sách quan trọng để hiển thị trên Frontend
+    private List<PitchDTO> pitches;
     private List<PitchPriceDTO> pitchPrices;
     private List<ImageClubDTO> imageClubs;
     private List<CommentDTO> comments;
+
+    // Class đại diện cho Sân con (Ví dụ: Sân 1, Sân 2...)
+    @Data
+    public static class PitchDTO {
+        private long id;
+        private String name;
+        private boolean active;
+    }
 
     @Data
     public static class PitchPriceDTO {

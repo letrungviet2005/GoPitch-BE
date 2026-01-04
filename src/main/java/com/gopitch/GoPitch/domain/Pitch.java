@@ -58,6 +58,9 @@ public class Pitch {
     @Column(name = "created_by")
     private String createdBy;
 
+    private java.time.LocalTime timeStart;
+
+    private java.time.LocalTime timeEnd;
     // many pitch to one club
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

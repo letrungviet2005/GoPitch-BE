@@ -85,13 +85,15 @@ public class Club {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private User user;
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("club") // Chặn Pitch gọi ngược lại Club
     private List<Pitch> pitches;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bill> bills;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("club")
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -99,5 +101,12 @@ public class Club {
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ImageClub> imageClubs;
+
+    private Double latitude;
+    private Double longitude;
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("club")
+    private List<ExtraService> extraServices;
 
 }
