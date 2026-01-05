@@ -20,7 +20,7 @@ public class UserResponseDTO {
     private String updatedBy;
 
     private RoleInfoDTO role;
-    private BadgeInfoDTO badge;
+    private UserInfoDTO userInformation;
 
     @Getter
     @Setter
@@ -31,9 +31,12 @@ public class UserResponseDTO {
 
     @Getter
     @Setter
-    public static class BadgeInfoDTO {
-        private long id;
-        private String name;
-        private String image;
+    public static class UserInfoDTO {
+        private String fullName;
+        private String phoneNumber;
+        private String address;
+        private Double latitude;
+        private Double longitude;
     }
+
 }

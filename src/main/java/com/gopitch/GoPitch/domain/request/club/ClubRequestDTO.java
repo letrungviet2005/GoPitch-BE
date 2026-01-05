@@ -1,20 +1,15 @@
 package com.gopitch.GoPitch.domain.request.club;
 
 import java.time.LocalTime;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-/**
- * DTO cho request tạo/cập nhật Club
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,9 +35,11 @@ public class ClubRequestDTO {
     @NotNull(message = "Active status is required")
     private boolean active = true;
 
-    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format, must be HH:mm")
+    // Lưu ý: @Pattern chỉ dùng cho String, LocalTime không cần
     private LocalTime timeStart;
-
-    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "Invalid time format, must be HH:mm")
     private LocalTime timeEnd;
+
+    // --- THÊM 2 TRƯỜNG NÀY ĐỂ NHẬN DỮ LIỆU TỪ FE ---
+    private Double latitude;
+    private Double longitude;
 }

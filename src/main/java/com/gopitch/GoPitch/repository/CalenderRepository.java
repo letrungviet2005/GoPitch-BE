@@ -16,4 +16,6 @@ public interface CalenderRepository extends JpaRepository<Calender, Long> {
 
     // Kiểm tra xem tại pitch này, giờ này đã có slot chưa
     boolean existsByPitchIdAndStartTime(Long pitchId, LocalDateTime startTime);
+
+    Calender findByPitchIdAndStartTime(Long pitchId, LocalDateTime startTime);
 }

@@ -53,4 +53,7 @@ public class ClubResponseDTO {
         private int rate;
         private String userName;
     }
+
+    private Double latitude;
+    private Double longitude;
 }

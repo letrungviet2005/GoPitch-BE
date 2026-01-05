@@ -180,4 +180,29 @@ public class UserService implements UserDetailsService {
         return new ResultPaginationDTO<>(meta, page.getContent());
     }
 
+    public UserResponseDTO getProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng với email: " + email));
+
+        // Map từ Entity sang DTO
+        UserResponseDTO dto = new UserResponseDTO();
+        dto.setId(user.getId());
+        dto.setEmail(user.getEmail());
+        dto.setName(user.getName());
+        dto.setPoint(user.getPoint());
+        dto.setStreakCount(user.getStreakCount());
+
+        if (user.getUserInformation() != null) {
+            UserResponseDTO.UserInfoDTO infoDTO = new UserResponseDTO.UserInfoDTO();
+            infoDTO.setFullName(user.getUserInformation().getFullName());
+            infoDTO.setPhoneNumber(user.getUserInformation().getPhoneNumber());
+            infoDTO.setAddress(user.getUserInformation().getAddress());
+            infoDTO.setLatitude(user.getUserInformation().getLatitude());
+            infoDTO.setLongitude(user.getUserInformation().getLongitude());
+            dto.setUserInformation(infoDTO);
+        }
+
+        return dto;
+    }
+
 }

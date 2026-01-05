@@ -45,6 +45,8 @@ public class ClubService {
         response.setActive(club.isActive());
         response.setTimeStart(club.getTimeStart());
         response.setTimeEnd(club.getTimeEnd());
+        response.setLatitude(club.getLatitude());
+        response.setLongitude(club.getLongitude());
 
         // 1. Map Pitch Prices
         if (club.getPitchPrices() != null) {
@@ -115,6 +117,8 @@ public class ClubService {
         club.setActive(requestDTO.isActive());
         club.setTimeStart(requestDTO.getTimeStart());
         club.setTimeEnd(requestDTO.getTimeEnd());
+        club.setLatitude(requestDTO.getLatitude());
+        club.setLongitude(requestDTO.getLongitude());
 
         Club savedClub = clubRepository.save(club);
         return convertToClubResponseDTO(savedClub);
@@ -140,6 +144,8 @@ public class ClubService {
         clubDB.setActive(requestDTO.isActive());
         clubDB.setTimeStart(requestDTO.getTimeStart());
         clubDB.setTimeEnd(requestDTO.getTimeEnd());
+        clubDB.setLatitude(requestDTO.getLatitude());
+        clubDB.setLongitude(requestDTO.getLongitude());
 
         Club updatedClub = clubRepository.save(clubDB);
         return convertToClubResponseDTO(updatedClub);
