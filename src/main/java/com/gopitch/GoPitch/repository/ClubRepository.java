@@ -5,8 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long>, JpaSpecificationExecutor<Club> {
@@ -23,4 +26,14 @@ public interface ClubRepository extends JpaRepository<Club, Long>, JpaSpecificat
     // Hàm tìm kiếm mở rộng cả tên và địa chỉ
     Page<Club> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(
             String name, String address, Pageable pageable);
+
+    Page<Club> findByUserId(Long userId, Pageable pageable);
+
+    Page<Club> findByUserEmail(String email, Pageable pageable);
+
+    @Query(value = "SELECT * FROM clubs c WHERE " +
+            "(6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + "
+            +
+            "sin(radians(:lat)) * sin(radians(c.latitude)))) <= :radius", nativeQuery = true)
+    List<Club> findNearestClubs(@Param("lat") double lat, @Param("lng") double lng, @Param("radius") double radius);
 }

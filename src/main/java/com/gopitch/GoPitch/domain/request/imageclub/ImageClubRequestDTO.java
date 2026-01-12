@@ -15,6 +15,4 @@ public class ImageClubRequestDTO {
     @NotBlank(message = "Image URL cannot be blank")
     private String imageUrl;
 
-
-
 }

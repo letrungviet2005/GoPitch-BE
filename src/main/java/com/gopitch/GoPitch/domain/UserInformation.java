@@ -17,7 +17,6 @@ public class UserInformation {
     private String phoneNumber;
     private String address;
 
-    // Quan trọng để tính khoảng cách
     private Double latitude;
     private Double longitude;
 

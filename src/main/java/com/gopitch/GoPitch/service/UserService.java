@@ -29,6 +29,7 @@ import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
 import com.gopitch.GoPitch.repository.RoleRepository;
 import com.gopitch.GoPitch.domain.Role;
 import com.gopitch.GoPitch.domain.request.user.CreateUserRequestDTO;
+import com.gopitch.GoPitch.util.SecurityUtil;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -204,5 +205,32 @@ public class UserService implements UserDetailsService {
 
         return dto;
     }
+
+    public UserResponseDTO getMyProfile() {
+    // 1. Lấy email từ "túi" Security (Token)
+    String email = SecurityUtil.getCurrentUserLogin()
+            .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thông tin đăng nhập"));
+
+    // 2. Tìm User dựa trên email
+    User user = this.userRepository.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("User không tồn tại trong hệ thống"));
+
+    // 3. Map dữ liệu sang DTO (Bóc tách User + UserInfo)
+    UserResponseDTO res = new UserResponseDTO();
+    res.setId(user.getId());
+    res.setEmail(user.getEmail());
+    res.setName(user.getName());
+
+    // Nếu User có UserInformation thì bóc ra
+    if (user.getUserInformation() != null) {
+        UserResponseDTO.UserInfoDTO info = new UserResponseDTO.UserInfoDTO();
+        info.setFullName(user.getUserInformation().getFullName());
+        info.setPhoneNumber(user.getUserInformation().getPhoneNumber());
+        info.setAddress(user.getUserInformation().getAddress());
+        res.setUserInformation(info);
+    }
+
+    return res;
+}
 
 }

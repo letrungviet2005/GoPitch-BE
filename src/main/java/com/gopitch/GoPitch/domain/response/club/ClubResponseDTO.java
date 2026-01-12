@@ -35,6 +35,8 @@ public class ClubResponseDTO {
 
     @Data
     public static class PitchPriceDTO {
+        private Long id; // Phải có
+        private Long pitchId;
         private String name;
         private double price;
         private LocalTime timeStart;

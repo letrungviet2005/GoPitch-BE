@@ -85,10 +85,6 @@ public class Club {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private User user;
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("club") // Chặn Pitch gọi ngược lại Club
-    private List<Pitch> pitches;
-
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Bill> bills;
 
@@ -96,16 +92,24 @@ public class Club {
     @JsonIgnoreProperties("club")
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PitchPrice> pitchPrices;
-
-    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ImageClub> imageClubs;
-
     private Double latitude;
     private Double longitude;
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    // 1. Đối với Pitches
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("club")
+    private List<Pitch> pitches;
+
+    // 2. Đối với PitchPrices
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PitchPrice> pitchPrices;
+
+    // 3. Đối với ImageClubs
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ImageClub> imageClubs;
+
+    // 4. Đối với ExtraServices
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("club")
     private List<ExtraService> extraServices;
 

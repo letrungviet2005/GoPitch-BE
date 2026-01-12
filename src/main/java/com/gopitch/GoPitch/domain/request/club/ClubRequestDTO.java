@@ -9,37 +9,59 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClubRequestDTO {
-
-    @NotBlank(message = "Name is required")
-    @Size(max = 100, message = "Name must not exceed 100 characters")
     private String name;
-
-    @Size(max = 500, message = "Description must not exceed 500 characters")
-    private String description;
-
-    @Size(max = 255, message = "Address must not exceed 255 characters")
     private String address;
-
-    @Pattern(regexp = "^(\\+?[0-9]{7,15})?$", message = "Invalid phone number format")
     private String phoneNumber;
-
-    @Size(max = 255, message = "Image URL must not exceed 255 characters")
+    private String description;
     private String imageAvatar;
-
-    @NotNull(message = "Active status is required")
-    private boolean active = true;
-
-    // Lưu ý: @Pattern chỉ dùng cho String, LocalTime không cần
     private LocalTime timeStart;
     private LocalTime timeEnd;
-
-    // --- THÊM 2 TRƯỜNG NÀY ĐỂ NHẬN DỮ LIỆU TỪ FE ---
+    private boolean active;
     private Double latitude;
     private Double longitude;
+
+    private List<PitchDTO> pitches;
+    private List<ImageClubDTO> imageClubs;
+    private List<ExtraServiceDTO> extraServices;
+    private List<PitchPriceDTO> pitchPrices;
+
+    @Getter
+    @Setter
+    public static class PitchDTO {
+        private Long id;
+        private String name;
+        private boolean active;
+        private List<PitchPriceDTO> pitchPrices;
+    }
+
+    @Getter
+    @Setter
+    public static class ImageClubDTO {
+        private String imageUrl;
+    }
+
+    @Getter
+    @Setter
+    public static class PitchPriceDTO {
+        private Long pitchId;
+        private String name;
+        private double price;
+        private LocalTime timeStart;
+        private LocalTime timeEnd;
+    }
+
+    @Getter
+    @Setter
+    public static class ExtraServiceDTO {
+        private String name;
+        private double price;
+        private String description;
+    }
 }
