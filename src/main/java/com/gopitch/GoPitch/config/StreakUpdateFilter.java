@@ -17,6 +17,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class StreakUpdateFilter extends OncePerRequestFilter {
@@ -30,18 +32,30 @@ public class StreakUpdateFilter extends OncePerRequestFilter {
     }
 
     @Override
-    @Transactional
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
+
+        // 🚫 Bỏ qua auth endpoints
+        String path = request.getRequestURI();
+        if (path.startsWith("/api/v1/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         try {
             Optional<String> userEmailOpt = SecurityUtil.getCurrentUserLogin();
 
             if (userEmailOpt.isPresent()) {
-                Optional<User> userOpt = userRepository.findByEmail(userEmailOpt.get());
-                if (userOpt.isPresent()) {
-                    streakService.updateUserStreak(userOpt.get());
-                }
+                userRepository.findByEmail(userEmailOpt.get())
+                        .ifPresent(user -> {
+                            try {
+                                streakService.updateUserStreak(user);
+                            } catch (Exception ex) {
+                                logger.warn("Streak update failed for user " + user.getEmail(), ex);
+                            }
+                        });
             }
         } catch (Exception e) {
             logger.error("Could not update user streak", e);
