@@ -37,7 +37,6 @@ public class StreakUpdateFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        // 🚫 Bỏ qua auth endpoints
         String path = request.getRequestURI();
         if (path.startsWith("/api/v1/auth")) {
             filterChain.doFilter(request, response);
