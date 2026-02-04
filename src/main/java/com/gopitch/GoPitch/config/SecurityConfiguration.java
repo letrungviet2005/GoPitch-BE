@@ -60,7 +60,10 @@ public class SecurityConfiguration {
                 "/api/v1/auth/refresh",
                 "/uploads/**",
                 "/error",
-                "/favicon.ico"
+                "/favicon.ico",
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html"
         };
 
         http
