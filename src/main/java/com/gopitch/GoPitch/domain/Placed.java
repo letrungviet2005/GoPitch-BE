@@ -47,13 +47,12 @@ public class Placed {
     // many placed to one bill
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bill_id", nullable = false)
-    @JsonIgnore // QUAN TRỌNG: Khi lấy lịch, ta không cần xem chi tiết cái Bill này là của ai
+    @JsonIgnore
     private Bill bill;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id", nullable = false)
-    @JsonIgnore // QUAN TRỌNG: Đã đứng ở Calender rồi thì không cần render lại Calender trong
-                // Placed nữa
+    @JsonIgnore
     private Calender calendar;
 
 }

@@ -23,7 +23,6 @@ public class OwnerClubController {
         this.clubService = clubService;
     }
 
-    // 1. Lấy danh sách sân của riêng tôi (Owner)
     @GetMapping("/clubs")
     @ApiMessage("Fetch clubs by owner")
     public ResponseEntity<ResultPaginationDTO<ClubResponseDTO>> getMyClubs(Pageable pageable) {
