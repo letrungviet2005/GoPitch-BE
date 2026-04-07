@@ -6,7 +6,6 @@ import com.gopitch.GoPitch.domain.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    // Additional query methods can be defined here if needed
     boolean existsById(long id);
 
     boolean existsByContent(String content);
