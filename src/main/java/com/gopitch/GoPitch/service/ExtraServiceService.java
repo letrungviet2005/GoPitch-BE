@@ -22,15 +22,12 @@ public class ExtraServiceService {
         this.clubRepository = clubRepository;
     }
 
-    // --- LOGIC LẤY DANH SÁCH (Hàm ông đang gọi ở Controller) ---
     public List<ExtraServiceResponseDTO> getServicesByClub(long clubId) {
         List<ExtraService> services = extraServiceRepository.findByClubId(clubId);
 
-        // Chuyển đổi từ Entity sang ResponseDTO bằng Stream
         return services.stream().map(this::convertToResponseDTO).collect(Collectors.toList());
     }
 
-    // --- LOGIC TẠO MỚI ---
     @Transactional
     public ExtraServiceResponseDTO createService(ExtraServiceRequestDTO request) {
         Club club = clubRepository.findById(request.getClubId())
@@ -46,7 +43,6 @@ public class ExtraServiceService {
         return convertToResponseDTO(saved);
     }
 
-    // --- HELPER METHOD: MAPPING ENTITY -> DTO ---
     private ExtraServiceResponseDTO convertToResponseDTO(ExtraService entity) {
         ExtraServiceResponseDTO dto = new ExtraServiceResponseDTO();
         dto.setId(entity.getId());
