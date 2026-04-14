@@ -34,12 +34,9 @@ public class CalenderService {
 
     @Transactional
     public void createBookingTransaction(List<Map<String, Object>> slots, Long clubId, Double totalAmount) {
-        // FIX LỖI 2: Thêm .orElse(null) hoặc đảm bảo kiểu trả về đúng
         String email = SecurityUtil.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("Chưa đăng nhập"));
 
-        // Giả sử findByEmail trong Repo của ông trả về Optional<User>
         User user = userRepository.findByEmail(email).orElse(null);
-        // Hoặc
         Club club = clubRepository.findById(clubId).orElseThrow(() -> new RuntimeException("Không tìm thấy CLB"));
 
         Bill bill = new Bill();
@@ -60,7 +57,6 @@ public class CalenderService {
             LocalTime time = LocalTime.parse(timeStr);
             LocalDateTime startTime = date.atTime(time);
 
-            // FIX LỖI 1: Hàm này đã được thêm vào CalenderRepository
             Calender calendar = calenderRepository.findByPitchIdAndStartTime(pitchId, startTime);
 
             if (calendar == null) {
