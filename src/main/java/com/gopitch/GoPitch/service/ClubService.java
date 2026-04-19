@@ -112,7 +112,6 @@ public class ClubService {
         return response;
     }
 
-    /** Tạo mới club */
     @Transactional
     public ClubResponseDTO createClub(ClubRequestDTO requestDTO) {
         String email = SecurityUtil.getCurrentUserLogin()
