@@ -20,10 +20,8 @@ public interface ClubRepository extends JpaRepository<Club, Long>, JpaSpecificat
 
     boolean existsByNameAndIdNot(String name, Long id);
 
-    // THÊM LẠI HÀM NÀY (Hàm mà Service đang báo thiếu)
     Page<Club> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-    // Hàm tìm kiếm mở rộng cả tên và địa chỉ
     Page<Club> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(
             String name, String address, Pageable pageable);
 
