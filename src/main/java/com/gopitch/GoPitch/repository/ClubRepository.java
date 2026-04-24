@@ -14,24 +14,24 @@ import java.util.List;
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long>, JpaSpecificationExecutor<Club> {
 
-    Optional<Club> findByName(String name);
+        Optional<Club> findByName(String name);
 
-    boolean existsByName(String name);
+        boolean existsByName(String name);
 
-    boolean existsByNameAndIdNot(String name, Long id);
+        boolean existsByNameAndIdNot(String name, Long id);
 
-    Page<Club> findByNameContainingIgnoreCase(String name, Pageable pageable);
+        Page<Club> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-    Page<Club> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(
-            String name, String address, Pageable pageable);
+        Page<Club> findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(
+                        String name, String address, Pageable pageable);
 
-    Page<Club> findByUserId(Long userId, Pageable pageable);
+        Page<Club> findByUserId(Long userId, Pageable pageable);
 
-    Page<Club> findByUserEmail(String email, Pageable pageable);
+        Page<Club> findByUserEmail(String email, Pageable pageable);
 
-    @Query(value = "SELECT * FROM clubs c WHERE " +
-            "(6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + "
-            +
-            "sin(radians(:lat)) * sin(radians(c.latitude)))) <= :radius", nativeQuery = true)
-    List<Club> findNearestClubs(@Param("lat") double lat, @Param("lng") double lng, @Param("radius") double radius);
+        @Query(value = "SELECT * FROM clubs c WHERE " +
+                        "(6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + "
+                        +
+                        "sin(radians(:lat)) * sin(radians(c.latitude)))) <= :radius", nativeQuery = true)
+        List<Club> findNearestClubs(@Param("lat") double lat, @Param("lng") double lng, @Param("radius") double radius);
 }

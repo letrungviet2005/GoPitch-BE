@@ -12,5 +12,5 @@ public class BillResponseDTO {
     private String createdAt;
     private String clubName;
     private String clubAddress;
-    private List<PlacedDTO> slots; // Chi tiết từng sân đặt
+    private List<PlacedDTO> slots; 
 }
