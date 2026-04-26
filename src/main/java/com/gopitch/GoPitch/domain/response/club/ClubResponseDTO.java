@@ -19,13 +19,11 @@ public class ClubResponseDTO {
     private LocalTime timeStart;
     private LocalTime timeEnd;
 
-    // Danh sách quan trọng để hiển thị trên Frontend
     private List<PitchDTO> pitches;
     private List<PitchPriceDTO> pitchPrices;
     private List<ImageClubDTO> imageClubs;
     private List<CommentDTO> comments;
 
-    // Class đại diện cho Sân con (Ví dụ: Sân 1, Sân 2...)
     @Data
     public static class PitchDTO {
         private long id;
