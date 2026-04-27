@@ -17,9 +17,9 @@ public class ExtraService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String name; // Ví dụ: Thuê vợt Yonex
-    private double price; // 50000
-    private String unit; // lượt/giờ/chai
+    private String name;
+    private double price;
+    private String unit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
