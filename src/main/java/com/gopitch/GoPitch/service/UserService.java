@@ -31,6 +31,7 @@ import com.gopitch.GoPitch.util.error.ResourceNotFoundException;
 import com.gopitch.GoPitch.repository.RoleRepository;
 import com.gopitch.GoPitch.domain.Role;
 import com.gopitch.GoPitch.domain.request.user.CreateUserRequestDTO;
+import com.gopitch.GoPitch.domain.request.user.UpdateUserRequestDTO;
 import com.gopitch.GoPitch.util.SecurityUtil;
 
 @Service
@@ -198,6 +199,64 @@ public class UserService implements UserDetailsService {
                 page.getTotalElements());
 
         return new ResultPaginationDTO<>(meta, page.getContent());
+    }
+
+    @Transactional(readOnly = true)
+    public ResultPaginationDTO<UserResponseDTO> getUserSummaries(Pageable pageable) {
+        Page<User> page = userRepository.findAll(pageable);
+
+        List<UserResponseDTO> users = page.getContent().stream()
+                .map(this::convertToUserResponseDTO)
+                .collect(Collectors.toList());
+
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta(
+                page.getNumber() + 1,
+                page.getSize(),
+                page.getTotalPages(),
+                page.getTotalElements());
+
+        return new ResultPaginationDTO<>(meta, users);
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponseDTO getUserById(long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        return convertToUserResponseDTO(user);
+    }
+
+    @Transactional
+    public UserResponseDTO setUserActive(long id, boolean active) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        user.setActive(active);
+        return convertToUserResponseDTO(userRepository.save(user));
+    }
+
+    @Transactional
+    public UserResponseDTO updateUser(long id, UpdateUserRequestDTO requestDTO) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        if (requestDTO.getName() != null) {
+            user.setName(requestDTO.getName());
+        }
+        if (requestDTO.getEmail() != null) {
+            user.setEmail(requestDTO.getEmail());
+        }
+        if (requestDTO.getActive() != null) {
+            user.setActive(requestDTO.getActive());
+        }
+        if (requestDTO.getPoint() != null) {
+            user.setPoint(requestDTO.getPoint());
+        }
+        if (requestDTO.getRoleId() != null) {
+            Role role = roleRepository.findById(requestDTO.getRoleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + requestDTO.getRoleId()));
+            user.setRole(role);
+        }
+
+        return convertToUserResponseDTO(userRepository.save(user));
     }
 
     public UserResponseDTO getProfile(String email) {

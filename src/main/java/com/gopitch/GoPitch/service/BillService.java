@@ -1,12 +1,16 @@
 package com.gopitch.GoPitch.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gopitch.GoPitch.domain.Bill;
+import com.gopitch.GoPitch.domain.response.ResultPaginationDTO;
 import com.gopitch.GoPitch.domain.response.bill.BillResponseDTO;
 import com.gopitch.GoPitch.domain.response.placed.PlacedDTO;
 import com.gopitch.GoPitch.repository.BillRepository;
@@ -48,11 +52,44 @@ public class BillService {
         return toBillResponseDTO(bill);
     }
 
+    @Transactional(readOnly = true)
+    public ResultPaginationDTO<BillResponseDTO> getAllForAdmin(Pageable pageable) {
+        Page<Bill> pageBill = billRepository.findAll(pageable);
+        List<BillResponseDTO> bills = pageBill.getContent().stream()
+                .map(this::toBillResponseDTO)
+                .collect(Collectors.toList());
+
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta(
+                pageBill.getNumber() + 1,
+                pageBill.getSize(),
+                pageBill.getTotalPages(),
+                pageBill.getTotalElements());
+
+        return new ResultPaginationDTO<>(meta, bills);
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getAdminRevenueSummary() {
+        List<Bill> bills = billRepository.findAll();
+        double total = bills.stream().mapToDouble(Bill::getPrice).sum();
+        long paidCount = bills.stream().filter(Bill::isStatus).count();
+
+        return Map.of(
+                "total", total,
+                "count", bills.size(),
+                "paidCount", paidCount);
+    }
+
     private BillResponseDTO toBillResponseDTO(Bill bill) {
         BillResponseDTO dto = new BillResponseDTO();
         dto.setId(bill.getId());
         dto.setPrice(bill.getPrice());
         dto.setCreatedAt(bill.getCreatedAt());
+        dto.setOrderCode(bill.getOrderCode());
+        dto.setStatus(bill.isStatus());
+        if (bill.getUser() != null) {
+            dto.setCustomerName(bill.getUser().getName());
+        }
         dto.setClubName(bill.getClub().getName());
         dto.setClubAddress(bill.getClub().getAddress());
 

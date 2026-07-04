@@ -25,8 +25,10 @@ public class OwnerClubController {
 
     @GetMapping("/clubs")
     @ApiMessage("Fetch clubs by owner")
-    public ResponseEntity<ResultPaginationDTO<ClubResponseDTO>> getMyClubs(Pageable pageable) {
-        return ResponseEntity.ok(this.clubService.fetchClubsByOwner(pageable));
+    public ResponseEntity<ResultPaginationDTO<ClubResponseDTO>> getMyClubs(
+            Pageable pageable,
+            @RequestParam(name = "name", required = false) String name) {
+        return ResponseEntity.ok(this.clubService.fetchClubsByOwner(pageable, name));
     }
 
     // 2. Lấy chi tiết 1 sân để sửa

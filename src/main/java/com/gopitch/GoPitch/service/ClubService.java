@@ -183,7 +183,7 @@ public class ClubService {
             List<ImageClub> imageClubs = requestDTO.getImageClubs().stream().map(imgDTO -> {
                 ImageClub imageClub = new ImageClub();
                 imageClub.setImageUrl(imgDTO.getImageUrl());
-                imageClub.setClub(club); // Link ảnh tới Club
+                imageClub.setClub(club); 
                 return imageClub;
             }).collect(Collectors.toList());
             club.setImageClubs(imageClubs);
@@ -376,6 +376,31 @@ public class ClubService {
                 pageable.getPageSize(),
                 pageClub.getTotalPages(),
                 pageClub.getTotalElements());
+
+        return new ResultPaginationDTO<>(meta, listDTO);
+    }
+    @Transactional(readOnly = true)
+    public ResultPaginationDTO<ClubResponseDTO> fetchClubsByOwner(Pageable pageable, String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return fetchClubsByOwner(pageable);
+        }
+
+        String currentUserEmail = SecurityUtil.getCurrentUserLogin()
+                .orElseThrow(() -> new BadRequestException("User is not authenticated"));
+
+        Page<Club> pageClub = clubRepository.findByUserEmail(currentUserEmail, pageable);
+        String keyword = name.trim().toLowerCase();
+
+        List<ClubResponseDTO> listDTO = pageClub.getContent().stream()
+                .filter(club -> club.getName() != null && club.getName().toLowerCase().contains(keyword))
+                .map(this::convertToClubResponseDTO)
+                .collect(Collectors.toList());
+
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta(
+                pageable.getPageNumber() + 1,
+                pageable.getPageSize(),
+                pageClub.getTotalPages(),
+                listDTO.size());
 
         return new ResultPaginationDTO<>(meta, listDTO);
     }
