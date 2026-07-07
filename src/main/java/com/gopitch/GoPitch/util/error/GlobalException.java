@@ -19,7 +19,6 @@ import com.gopitch.GoPitch.domain.response.RestResponse;
 @RestControllerAdvice
 public class GlobalException {
 
-    // handle all exception
     @ExceptionHandler(value = {
             Exception.class
     })
