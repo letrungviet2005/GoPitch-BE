@@ -45,7 +45,6 @@ public class ClubService {
             return null;
 
         ClubResponseDTO response = new ClubResponseDTO();
-        // ... (Giữ nguyên các trường cũ) ...
         response.setId(club.getId());
         response.setName(club.getName());
         response.setDescription(club.getDescription());
