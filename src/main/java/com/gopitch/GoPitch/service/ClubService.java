@@ -94,7 +94,7 @@ public class ClubService {
             }).collect(Collectors.toList()));
         }
 
-        // 4. Map Pitches (Sân con) - THÊM ĐOẠN NÀY VÀO
+        // 4. Map Pitches 
         if (club.getPitches() != null) {
             response.setPitches(club.getPitches().stream().map(p -> {
                 ClubResponseDTO.PitchDTO dto = new ClubResponseDTO.PitchDTO();
