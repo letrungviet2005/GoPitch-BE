@@ -203,7 +203,6 @@ public class ClubService {
         return convertToClubResponseDTO(savedClub);
     }
 
-    /** Cập nhật club */
     @Transactional
     public ClubResponseDTO updateClub(long id, ClubRequestDTO requestDTO)
             throws ResourceNotFoundException, DuplicateResourceException, BadRequestException {
